@@ -1,19 +1,43 @@
+///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+// DEPENDENCIES////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+// Grabs mysql npm package
 var mySql = require("mysql");
+// Grabs inquirer npm package
 var inquirer = require("inquirer");
-
+///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+// NODE.JS + MYSQL
+///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+// Connects to supplied path.
 var connection = mySql.createConnection({
   host: "localhost",
   port: 3306,
 
+  // user name
   user:"root",
 
+  // password + Bamazon database name
   password:"",
   database: "Bamazon"
 });
 
-connection.connect(function(err) {
-  if (err) throw err;
-  console.log("connected as id " + connection.threadId);
+// function where if there is an error (err), then the function will stop, otherwise console logs connection id. 
+// connection.connect(function(err) {
+//   if (err) throw err;
+//   // console.log("connected as id " + connection.threadId);
+// });
+
+connection.query("SELECT * FROM products", function(err, res) {
+  for (var i = 0; i < res.length; i++) {
+    console.log(res[i].item_id + " | " + res[i].product_name + " | " + res[i].department_name + " | " + res[i].price) + " | " + res[i].stock_quantity;
+  }
+  console.log("--------------------------------------------");
 });
 
 
+
+// 'node bamazonCustomer.js' should do the following:
+// 1) Display all of the items available for sale (ids, names, and prices of products for sale)
+// 2) Prompts users with 2 messages
+// 
