@@ -22,11 +22,13 @@ var connection = mySql.createConnection({
   database: "Bamazon"
 });
 
-// function where if there is an error (err), then the function will stop, otherwise console logs connection id. 
+
+// function where if there is an error (err), then the function will stop, otherwise console logs connection id if connection is successful. 
 // connection.connect(function(err) {
 //   if (err) throw err;
 //   // console.log("connected as id " + connection.threadId);
 // });
+
 
 connection.query("SELECT * FROM products", function(err, res) {
   console.log("--------------------------------------------");
@@ -38,7 +40,36 @@ connection.query("SELECT * FROM products", function(err, res) {
 
 
 
+// Inquirer Function
+var selectProductId = function(){
+  inquirer.prompt({
+    name:"askProductId",
+    type:"rawlist",
+    message:"What is the ID number of the product that you would like to buy?",
+    choices: ["POST", "BID"]
+  }).then(function(answer){
+      if(answer.postOrBid.toUppperCase()=="POST"){
+        // Chose a product number 1 to 10
+        // Goes to a function that then asks how many units of the product they would like to buy
 
+    } else {
+        // error function
+    }
+  })  
+}
+
+var = numberOfUnits = function(){
+  inquirer.prompt([{
+      name:"product",
+      type:"input",
+      message:"What is the product number?"
+  }])
+}
+
+
+
+
+////////////////////////////////////////////////////////////////////////////////////////////////////////
 // To Do:
 // 'node bamazonCustomer.js' should do the following:
 // 1) Display all of the items available for sale (ids, names, and prices of products for sale)
