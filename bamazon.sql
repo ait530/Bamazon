@@ -20,7 +20,6 @@ CREATE TABLE products(
   PRIMARY KEY (item_id)
 );
 
-
 -- Create new rows containing data in all named columns, inserting 10 items-- 
 -- Nintendo Switch
 INSERT INTO products (item_id, product_name, department_name, price, stock_quantity)
@@ -52,7 +51,6 @@ VALUES (9, "Wrench", "Tools", 20, 2500);
 
 INSERT INTO products (item_id, product_name, department_name, price, stock_quantity)
 VALUES (10, "Fitted Baseball Cap", "Apparel", 35, 5000);
-
 
 -- Deletes table
 -- drop table if exists products;
