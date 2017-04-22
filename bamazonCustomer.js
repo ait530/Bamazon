@@ -67,37 +67,37 @@ var stockProduct = function(idnumber) {
   // setting stored value into index value of stock array
   var stockIndex = idnumber;
   console.log(stockIndex);
-    // console.log('working');
-    connection.query("SELECT * FROM products", function(err, res) {
-      if (err) throw err;
-      
-      inquirer.prompt({
-        name:"stock",
-        type:"userInput",
-        message:"How many units of the product would you like to buy?"
-      }).then(function(answer){
-        // console.log(res[i].stock_quantity);
-        // if number of units is less than the results of the selected stock quantity...
-        if(answer.stock < res[stockIndex].stock_quantity){ 
+  // console.log('working');
+  connection.query("SELECT * FROM products", function(err, res) {
+    if (err) throw err;
+    
+    inquirer.prompt({
+      name:"stock",
+      type:"userInput",
+      message:"How many units of the product would you like to buy?"
+    }).then(function(answer){
+      // console.log(res[i].stock_quantity);
+      // if number of units is less than the results of the selected stock quantity...
+      if(answer.stock < res[stockIndex].stock_quantity){ 
 
-          var updatedStock = res[stockIndex].stock_quantity - answer.stock;
-          console.log("You're allowed to buy that many!"); 
+        var updatedStock = res[stockIndex - 1].stock_quantity - answer.stock;
+        console.log("You're allowed to buy that many!"); 
 
-          // Updates stocks for that item in MySQL
-          if (connection.query("UPDATE products, SET ? WHERE ?", [{
-            stock_quantity: updatedStock }], function (err, res) {})) {
+        // Updates stocks for that item in MySQL
+        if (connection.query("UPDATE products, SET ? WHERE ?", [{
+          stock_quantity: updatedStock }], function (err, res) {})) {
 
-          // Then shows the updated stock for that item in the console.
-          console.log("Updated Stock: " + updatedStock);
-          } 
-          // As well as the total cost for their purchase.
-          console.log("Cost: " + res[stockIndex].price);     
+        // Then shows the updated stock for that item in the console.
+        console.log("Updated Stock: " + updatedStock);
         } 
-        else { 
-          console.log("Insufficient quantity!"); 
-        }
-      })
+        // As well as the total cost for their purchase.
+        console.log("Cost: " + res[stockIndex - 1].price);     
+      } 
+      else { 
+        console.log("Insufficient quantity!"); 
+      }
     })
+  })
 }
 // Begins the application by invoking the start function.
 start();
