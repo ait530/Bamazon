@@ -22,37 +22,73 @@ var connection = mySql.createConnection({
   database: "Bamazon"
 });
 
-// Provides Bamazon inventory to user, then invoke the selectProduct ID function
+// Displays Bamazon inventory data from MySQL to user, then invokes the selectProduct ID function.
 var start = function(){
   //Shows the inserted table values in MySQL to the console:
   connection.query("SELECT * FROM products", function(err, res) {
-    console.log("Welcome to Bamazon! Below is an inventory of our products available for sale:");
+    console.log("Welcome to Bamazon!");
+    console.log("Below is an inventory of our products available for sale:");
+    console.log("--------------------------------------------");
+    console.log("ID | Product | Department | Price | Stock");
     console.log("--------------------------------------------");
     for (var i = 0; i < res.length; i++) {
-      console.log(res[i].item_id + " | " + res[i].product_name + " | " + res[i].department_name + " | " + res[i].price) + " | " + res[i].stock_quantity;
+      console.log(res[i].item_id + " | " + res[i].product_name + " | " + res[i].department_name + " | " + res[i].price + " | " + res[i].stock_quantity);
     }
     console.log("--------------------------------------------");
     selectProductId();
   });
 }
 
-
-
-// Inquirer Function
+// Asks the user what Product ID they would like using Inquirer
 var selectProductId = function(){
-  inquirer.prompt({
-    name:"askProductId",
-    type:"userInput",
-    message:"What is the ID number of the product that you would like to buy (enter a number from 1 to 10)"
-  }).then(function(answer){
-      if(answer.input === ){
-        // Chose a product number 1 to 10
-        // Goes to a function that then asks how many units of the product they would like to buy
+  connection.query("SELECT * FROM products", function(err, res) { 
+    inquirer.prompt({
+      name:"productId",
+      type:"userInput",
+      message:"What is the ID number of the product that you would like to buy (enter a number from 1 to 10)"
+    }).then(function(answer){
+        if(answer.productId >= 1 && answer.productId <=10){
+           
+          // stores the answer in idnumber
+          var idnumber = answer.productId;
+          // Invokes the stockProduct function with inputted value.
+          stockProduct(idnumber);
 
-    } else {
-        // error function
-    }
-  })  
+        // Else if user does not input a valid value...
+      } else {
+          // Invalid statement.
+          console.log("Invalid. Please input a number from 1 up to 10.")
+      }
+    }) 
+  })
+}
+
+// Asks user how many Units of the product they would like to buy
+var stockProduct = function(idnumber) {
+  var stockIndex = idnumber;
+  console.log(stockIndex);
+    // console.log('working');
+    connection.query("SELECT * FROM products", function(err, res) {
+      if (err) throw err;
+      
+      inquirer.prompt({
+        name:"stock",
+        type:"userInput",
+        message:"How many units of the product would you like to buy?"
+      }).then(function(answer){
+
+        // console.log(res[i].stock_quantity);
+
+        // if number of units is less than the results of the selected stock quantity...
+        if(answer.stock < res[stockIndex].stock_quantity){ 
+
+          console.log("You're allowed to buy that many!"); 
+        }
+        else { 
+          console.log("Insufficient quantity!"); 
+        }
+      })
+    })
 }
 
 // Begins the application
@@ -79,7 +115,7 @@ start();
 // function where if there is an error (err), then the function will stop, otherwise console logs connection id if connection is successful. 
 // connection.connect(function(err) {
 //   if (err) throw err;
-//   // console.log("connected as id " + connection.threadId);
+//   console.log("connected as id " + connection.threadId);
 // });
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
@@ -108,6 +144,7 @@ start();
 // 2) Prompts users with 2 messages
 // Uses github and heroku process
 // Includes screenshots and/or a video showing the app working w/no bugs (included in README file)
+
 
 
 // Completed:
