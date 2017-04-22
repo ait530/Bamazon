@@ -88,7 +88,7 @@ var stockProduct = function(idnumber) {
           stock_quantity: updatedStock }], function (err, res) {})) {
 
         // Then shows the updated stock for that item in the console.
-        console.log("Updated Stock: " + updatedStock);
+        console.log("Remaining Stock: " + updatedStock);
         } 
         // As well as the total cost for their purchase.
         console.log("Cost: " + res[stockIndex - 1].price);     
