@@ -21,7 +21,7 @@ var connection = mySql.createConnection({
   database: "Bamazon"
 });
 
-// Displays Bamazon inventory data from MySQL to user, then invokes the selectProduct ID function.
+// Displays CLI Bamazon inventory data from MySQL to user, then invokes the selectProduct ID function.
 var start = function(){
   //Shows the inserted table values from MySQL workbench in the CLI:
   connection.query("SELECT * FROM products", function(err, res) {
@@ -76,27 +76,26 @@ var stockProduct = function(idnumber) {
       type:"userInput",
       message:"How many units of the product would you like to buy?"
     }).then(function(answer){
-      // console.log(res[i].stock_quantity);
-      // if number of units is less than the results of the selected stock quantity...
-      if(answer.stock < res[stockIndex].stock_quantity){ 
+        // console.log(res[i].stock_quantity);
+        // if number of units is less than the results of the selected stock quantity...
+        if(answer.stock < res[stockIndex].stock_quantity){ 
 
-        var updatedStock = res[stockIndex - 1].stock_quantity - answer.stock;
-        console.log("You're allowed to buy that many!"); 
+          var updatedStock = res[stockIndex - 1].stock_quantity - answer.stock;
+          console.log("You're allowed to buy that many!"); 
 
-        // Updates stocks for that item in MySQL
-        if (connection.query("UPDATE products, SET ? WHERE ?", [{
-          stock_quantity: updatedStock }], function (err, res) {})) {
+          // Updates stocks for that item in MySQL
+          if (connection.query("UPDATE products, SET ? WHERE ?", [{
+            stock_quantity: updatedStock }], function (err, res) {})) {
 
-        // Then shows the updated stock for that item in the console.
-        console.log("Remaining Stock: " + updatedStock + " units");
-        } 
-        // As well as the total cost for their purchase.
-        console.log("Cost: " + "$" + (res[stockIndex - 1].price) * answer.stock);     
-      } 
-      else { 
-        console.log("Insufficient quantity!"); 
-      }
-    })
+          // Then shows the updated stock for that item in the console.
+          console.log("Remaining Stock: " + updatedStock + " units");
+          } 
+          // As well as the total cost for their purchase.
+          console.log("Cost: " + "$" + (res[stockIndex - 1].price) * answer.stock);     
+        } else { 
+          console.log("Insufficient quantity!"); 
+          }
+      })
   })
 }
 // Begins the application by invoking the start function.
