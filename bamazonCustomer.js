@@ -94,8 +94,8 @@ var stockProduct = function(idnumber) {
       }
 
       else if (answer.stock < res[stockIndex - 1].stock_quantity){ 
-        console.log("This is answer.stock " + answer.stock);
-        console.log("This is res[stockIndex - 1].stock_quantity " + res[stockIndex - 1].stock_quantity);
+        // console.log("This is answer.stock " + answer.stock);
+        // console.log("This is res[stockIndex - 1].stock_quantity " + res[stockIndex - 1].stock_quantity);
 
         var updatedStock = res[stockIndex - 1].stock_quantity - answer.stock;
         console.log("You're allowed to buy that many!"); 
@@ -108,7 +108,7 @@ var stockProduct = function(idnumber) {
         // Then shows the updated stock for that item in the console.
         console.log("Remaining Stock: " + updatedStock); 
         // As well as the total cost for their purchase.
-        console.log("Cost: " + res[stockIndex - 1].price);     
+        console.log("Cost: " + (res[stockIndex - 1].price) * answer.stock);     
       } 
 
       else { 
