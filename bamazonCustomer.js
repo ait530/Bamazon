@@ -82,16 +82,17 @@ var stockProduct = function(idnumber) {
 
       // if number of desired units is less than the quantity of the selected stock quantity...
       if(answer.stock < res[stockIndex - 1].stock_quantity){ 
-        // console.log("This is answer.stock " + answer.stock);
-        // console.log("This is res[stockIndex - 1].stock_quantity " + res[stockIndex - 1].stock_quantity);
+        console.log("This is answer.stock " + answer.stock);
+        console.log("This is res[stockIndex - 1].stock_quantity " + res[stockIndex - 1].stock_quantity);
 
         var updatedStock = res[stockIndex - 1].stock_quantity - answer.stock;
         console.log("You're allowed to buy that many!"); 
 
         // Updates stocks for that item in MySQL
-        connection.query("UPDATE products SET stock_quantity = ?", {
-          stock_quantity: updatedStock }, function (err, res) {});
-
+        connection.query("UPDATE products SET ? WHERE ?", 
+          [{stock_quantity: updatedStock}, 
+          {item_id: stockIndex}]);
+ 
         // Then shows the updated stock for that item in the console.
         console.log("Remaining Stock: " + updatedStock); 
         // As well as the total cost for their purchase.
