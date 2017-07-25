@@ -1,9 +1,9 @@
 /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 // DEPENDENCIES ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-// Grabs mysql npm package
+// Installs mysql npm package
 var mySql = require("mysql");
-// Grabs inquirer npm package
+// Installs inquirer npm package
 var inquirer = require("inquirer");
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 // NODE.JS + MYSQL ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -66,7 +66,8 @@ var selectProductId = function(){
 var stockProduct = function(idnumber) {
   // setting stored value into index value of stock array
   var stockIndex = idnumber;
-  console.log(stockIndex);
+
+  console.log("Selected Item ID: " + stockIndex);
   // console.log('working');
   connection.query("SELECT * FROM products", function(err, res) {
     if (err) throw err;
@@ -77,9 +78,10 @@ var stockProduct = function(idnumber) {
       message:"How many units of the product would you like to buy?"
     }).then(function(answer){
       // console.log(res[i].stock_quantity);
-      // if number of units is less than the results of the selected stock quantity...
-      if(answer.stock < res[stockIndex].stock_quantity){ 
-
+      // if number of desired units is less than the quantity of the selected stock quantity...
+      if(answer.stock < res[stockIndex - 1].stock_quantity){ 
+        // console.log("This is answer.stock " + answer.stock);
+        // console.log("This is res[stockIndex - 1].stock_quantity " + res[stockIndex - 1].stock_quantity);
         var updatedStock = res[stockIndex - 1].stock_quantity - answer.stock;
         console.log("You're allowed to buy that many!"); 
 
@@ -92,6 +94,9 @@ var stockProduct = function(idnumber) {
         // As well as the total cost for their purchase.
         console.log("Cost: " + res[stockIndex - 1].price);     
       } 
+      else if (answer.stock === 0) {
+        console.log("Please input a quanity greater than 0.")
+      }
       else { 
         console.log("Insufficient quantity!"); 
       }
