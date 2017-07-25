@@ -79,9 +79,21 @@ var stockProduct = function(idnumber) {
       message:"How many units of the product would you like to buy?"
     }).then(function(answer){
       // console.log(res[i].stock_quantity);
+      // console.log(answer);
 
       // if number of desired units is less than the quantity of the selected stock quantity...
-      if(answer.stock < res[stockIndex - 1].stock_quantity){ 
+      if (answer.stock == 0){
+        
+        console.log("Please input a quantity greater than 0. Returning to store front...                                                                                                                                                          ");
+        
+        setTimeout(function(){
+          start();
+        }, 2000);
+
+
+      }
+
+      else if (answer.stock < res[stockIndex - 1].stock_quantity){ 
         console.log("This is answer.stock " + answer.stock);
         console.log("This is res[stockIndex - 1].stock_quantity " + res[stockIndex - 1].stock_quantity);
 
@@ -98,10 +110,6 @@ var stockProduct = function(idnumber) {
         // As well as the total cost for their purchase.
         console.log("Cost: " + res[stockIndex - 1].price);     
       } 
-
-      else if (answer.stock === 0) {
-        console.log("Please input a quanity greater than 0.")
-      }
 
       else { 
         console.log("Insufficient quantity!"); 
